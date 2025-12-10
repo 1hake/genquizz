@@ -3,7 +3,7 @@ version: '3.8'
 # Production Swarm configuration
 services:
     genquizz:
-        image: genquizz:latest
+        image: thegobc/genquizz:latest
         deploy:
             replicas: 2
             restart_policy:
