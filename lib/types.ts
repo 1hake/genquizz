@@ -8,6 +8,19 @@ export interface Question {
 export interface Quiz {
     title: string;
     questions: Question[];
+    description?: string;
+    category?: string;
+    difficulty?: 'easy' | 'medium' | 'hard';
+}
+
+export interface QuizLibraryItem {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+    questionCount: number;
+    filename: string;
 }
 
 // Types for game state

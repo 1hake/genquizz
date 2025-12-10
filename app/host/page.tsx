@@ -3,9 +3,17 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import QRCode from 'react-qr-code';
-import { Quiz } from '@/lib/types';
+import { Quiz, QuizLibraryItem } from '@/lib/types';
 import { parseQuizFile } from '@/lib/quiz';
 import { getSocket } from '@/lib/socket';
+import {
+    getQuizLibrary,
+    loadQuizFromLibrary,
+    getCategories,
+    getCategoryDisplay,
+    getDifficultyDisplay,
+    searchQuizzes
+} from '@/lib/quiz-library';
 
 interface Player {
     nickname: string;
@@ -34,6 +42,9 @@ export default function HostPage() {
     const [lastAnswerResult, setLastAnswerResult] = useState<AnswerResult | null>(null);
     const [finalLeaderboard, setFinalLeaderboard] = useState<Array<{ nickname: string; score: number }>>([]);
     const [error, setError] = useState<string>('');
+    const [showLibrary, setShowLibrary] = useState<boolean>(false);
+    const [librarySearch, setLibrarySearch] = useState<string>('');
+    const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const socket = getSocket();
@@ -95,10 +106,36 @@ export default function HostPage() {
         if (parsedQuiz) {
             setQuiz(parsedQuiz);
             setError('');
+            setShowLibrary(false);
         } else {
             setError('Failed to parse quiz file. Please check the format.');
         }
     };
+
+    const handleLibraryQuizSelect = async (quizId: string) => {
+        const loadedQuiz = await loadQuizFromLibrary(quizId);
+        if (loadedQuiz) {
+            setQuiz(loadedQuiz);
+            setError('');
+            setShowLibrary(false);
+        } else {
+            setError('Failed to load quiz from library.');
+        }
+    };
+
+    // Get filtered quiz library
+    const allQuizzes = getQuizLibrary();
+    const categories = getCategories();
+
+    let filteredQuizzes = allQuizzes;
+    if (selectedCategory !== 'all') {
+        filteredQuizzes = filteredQuizzes.filter(quiz => quiz.category === selectedCategory);
+    }
+    if (librarySearch.trim()) {
+        filteredQuizzes = searchQuizzes(librarySearch).filter(quiz =>
+            selectedCategory === 'all' || quiz.category === selectedCategory
+        );
+    }
 
     const createRoom = () => {
         if (!quiz) return;
@@ -154,28 +191,127 @@ export default function HostPage() {
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Left Column - Quiz Setup and Controls */}
                     <div className="space-y-8">
-                        {/* Quiz Upload */}
+                        {/* Quiz Selection */}
                         {!quiz && (
-                            <div className="card-brutal-primary">
-                                <h2 className="text-brutal text-2xl mb-6">UPLOAD QUIZ 📄</h2>
-                                <div className="border-4 border-dashed border-black bg-white p-8 text-center transform hover:scale-105 transition-transform duration-200">
-                                    <input
-                                        type="file"
-                                        accept=".json"
-                                        onChange={handleFileUpload}
-                                        ref={fileInputRef}
-                                        className="hidden"
-                                    />
-                                    <div className="space-y-4">
-                                        <div className="text-6xl animate-bounce-slow">📄</div>
-                                        <p className="text-neutral-800 font-medium text-lg">Drop your epic quiz JSON file here!</p>
+                            <div className="space-y-6">
+                                {/* Tab Selector */}
+                                <div className="card-brutal-primary">
+                                    <div className="flex gap-4 mb-6">
                                         <button
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className="btn-brutal-accent text-lg"
+                                            onClick={() => setShowLibrary(false)}
+                                            className={`flex-1 py-3 px-4 font-bold text-lg border-3 border-black shadow-brutal transition-all ${!showLibrary
+                                                    ? 'bg-accent-400 text-white'
+                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                }`}
                                         >
-                                            CHOOSE FILE! 🚀
+                                            📄 UPLOAD QUIZ
+                                        </button>
+                                        <button
+                                            onClick={() => setShowLibrary(true)}
+                                            className={`flex-1 py-3 px-4 font-bold text-lg border-3 border-black shadow-brutal transition-all ${showLibrary
+                                                    ? 'bg-accent-400 text-white'
+                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                }`}
+                                        >
+                                            📚 QUIZ LIBRARY
                                         </button>
                                     </div>
+
+                                    {!showLibrary ? (
+                                        /* File Upload Section */
+                                        <div className="border-4 border-dashed border-black bg-white p-8 text-center transform hover:scale-105 transition-transform duration-200">
+                                            <input
+                                                type="file"
+                                                accept=".json"
+                                                onChange={handleFileUpload}
+                                                ref={fileInputRef}
+                                                className="hidden"
+                                            />
+                                            <div className="space-y-4">
+                                                <div className="text-6xl animate-bounce-slow">📄</div>
+                                                <p className="text-neutral-800 font-medium text-lg">Drop your epic quiz JSON file here!</p>
+                                                <button
+                                                    onClick={() => fileInputRef.current?.click()}
+                                                    className="btn-brutal-accent text-lg"
+                                                >
+                                                    CHOOSE FILE! 🚀
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        /* Quiz Library Section */
+                                        <div className="space-y-6">
+                                            {/* Search and Filter */}
+                                            <div className="space-y-4">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Search quizzes..."
+                                                    value={librarySearch}
+                                                    onChange={(e) => setLibrarySearch(e.target.value)}
+                                                    className="w-full px-4 py-3 text-lg font-medium border-3 border-black shadow-brutal"
+                                                />
+                                                <div className="flex gap-2 flex-wrap">
+                                                    <button
+                                                        onClick={() => setSelectedCategory('all')}
+                                                        className={`px-4 py-2 font-bold border-2 border-black shadow-brutal ${selectedCategory === 'all'
+                                                                ? 'bg-secondary-400 text-white'
+                                                                : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                            }`}
+                                                    >
+                                                        🌟 ALL
+                                                    </button>
+                                                    {categories.map(category => (
+                                                        <button
+                                                            key={category}
+                                                            onClick={() => setSelectedCategory(category)}
+                                                            className={`px-4 py-2 font-bold border-2 border-black shadow-brutal ${selectedCategory === category
+                                                                    ? 'bg-secondary-400 text-white'
+                                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                                }`}
+                                                        >
+                                                            {getCategoryDisplay(category).toUpperCase()}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Quiz Grid */}
+                                            <div className="grid gap-4 max-h-96 overflow-y-auto">
+                                                {filteredQuizzes.map(quiz => {
+                                                    const difficultyDisplay = getDifficultyDisplay(quiz.difficulty);
+                                                    return (
+                                                        <div
+                                                            key={quiz.id}
+                                                            onClick={() => handleLibraryQuizSelect(quiz.id)}
+                                                            className="bg-white border-3 border-black p-4 shadow-brutal cursor-pointer hover:scale-105 transition-transform duration-200"
+                                                        >
+                                                            <div className="flex justify-between items-start mb-2">
+                                                                <h3 className="font-bold text-lg text-neutral-800">{quiz.title}</h3>
+                                                                <span className={`text-sm font-bold ${difficultyDisplay.color}`}>
+                                                                    {difficultyDisplay.text}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-neutral-600 text-sm mb-3">{quiz.description}</p>
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="text-sm font-medium text-neutral-500">
+                                                                    {getCategoryDisplay(quiz.category)}
+                                                                </span>
+                                                                <span className="text-sm font-bold text-neutral-700">
+                                                                    📊 {quiz.questionCount} questions
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                                {filteredQuizzes.length === 0 && (
+                                                    <div className="text-center py-8 text-neutral-600">
+                                                        <div className="text-4xl mb-2">😔</div>
+                                                        <p className="font-medium">No quizzes found matching your criteria.</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
@@ -183,9 +319,36 @@ export default function HostPage() {
                         {/* Quiz Preview */}
                         {quiz && gameStatus === 'setup' && (
                             <div className="card-brutal-secondary">
-                                <h2 className="text-brutal text-2xl mb-4">{quiz.title.toUpperCase()}</h2>
+                                <div className="flex justify-between items-start mb-4">
+                                    <h2 className="text-brutal text-2xl">{quiz.title.toUpperCase()}</h2>
+                                    <button
+                                        onClick={() => { setQuiz(null); setShowLibrary(false); }}
+                                        className="btn-brutal-danger text-sm"
+                                    >
+                                        CHANGE QUIZ
+                                    </button>
+                                </div>
+
                                 <div className="space-y-4 mb-6">
-                                    <p className="text-neutral-800 font-bold text-lg">📊 {quiz.questions.length} QUESTIONS LOADED!</p>
+                                    {/* Quiz metadata */}
+                                    <div className="flex gap-4 flex-wrap">
+                                        <span className="text-neutral-800 font-bold">📊 {quiz.questions.length} QUESTIONS</span>
+                                        {quiz.category && (
+                                            <span className="text-neutral-700 font-medium">
+                                                {getCategoryDisplay(quiz.category)}
+                                            </span>
+                                        )}
+                                        {quiz.difficulty && (
+                                            <span className={`font-bold ${getDifficultyDisplay(quiz.difficulty).color}`}>
+                                                {getDifficultyDisplay(quiz.difficulty).text}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {quiz.description && (
+                                        <p className="text-neutral-700 font-medium">{quiz.description}</p>
+                                    )}
+
                                     <div className="max-h-32 overflow-y-auto bg-white border-3 border-black p-4">
                                         {quiz.questions.map((q, index) => (
                                             <div key={q.id} className="text-sm font-medium text-neutral-700 mb-1">
