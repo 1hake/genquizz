@@ -108,7 +108,7 @@ export default function HostPage() {
             setError('');
             setShowLibrary(false);
         } else {
-            setError('Failed to parse quiz file. Please check the format.');
+            setError('Échec de l\'analyse du fichier de quiz. Veuillez vérifier le format.');
         }
     };
 
@@ -119,7 +119,7 @@ export default function HostPage() {
             setError('');
             setShowLibrary(false);
         } else {
-            setError('Failed to load quiz from library.');
+            setError('Échec du chargement du quiz depuis la bibliothèque.');
         }
     };
 
@@ -167,14 +167,14 @@ export default function HostPage() {
                 <div className="card-brutal mb-8">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-brutal text-3xl md:text-4xl mb-2">HOST DASHBOARD</h1>
-                            <p className="text-neutral-700 font-medium text-lg">Manage your epic quiz game! 🎯</p>
+                            <h1 className="text-brutal text-3xl md:text-4xl mb-2">TABLEAU DE BORD HÔTE</h1>
+                            <p className="text-neutral-700 font-medium text-lg">Gérez votre jeu de quiz épique ! 🎯</p>
                         </div>
                         <Link
                             href="/"
                             className="btn-brutal-danger"
                         >
-                            ← BACK HOME
+                            ← RETOUR ACCUEIL
                         </Link>
                     </div>
                 </div>
@@ -200,24 +200,22 @@ export default function HostPage() {
                                         <button
                                             onClick={() => setShowLibrary(false)}
                                             className={`flex-1 py-3 px-4 font-bold text-lg border-3 border-black shadow-brutal transition-all ${!showLibrary
-                                                    ? 'bg-accent-400 text-white'
-                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                ? 'bg-accent-400 text-white'
+                                                : 'bg-white text-neutral-700 hover:bg-neutral-100'
                                                 }`}
                                         >
-                                            📄 UPLOAD QUIZ
+                                            📄 TÉLÉCHARGER QUIZ
                                         </button>
                                         <button
                                             onClick={() => setShowLibrary(true)}
                                             className={`flex-1 py-3 px-4 font-bold text-lg border-3 border-black shadow-brutal transition-all ${showLibrary
-                                                    ? 'bg-accent-400 text-white'
-                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                ? 'bg-accent-400 text-white'
+                                                : 'bg-white text-neutral-700 hover:bg-neutral-100'
                                                 }`}
                                         >
-                                            📚 QUIZ LIBRARY
+                                            📚 BIBLIOTHÈQUE DE QUIZ
                                         </button>
-                                    </div>
-
-                                    {!showLibrary ? (
+                                    </div>                                    {!showLibrary ? (
                                         /* File Upload Section */
                                         <div className="border-4 border-dashed border-black bg-white p-8 text-center transform hover:scale-105 transition-transform duration-200">
                                             <input
@@ -229,12 +227,12 @@ export default function HostPage() {
                                             />
                                             <div className="space-y-4">
                                                 <div className="text-6xl animate-bounce-slow">📄</div>
-                                                <p className="text-neutral-800 font-medium text-lg">Drop your epic quiz JSON file here!</p>
+                                                <p className="text-neutral-800 font-medium text-lg">Déposez votre fichier JSON de quiz épique ici !</p>
                                                 <button
                                                     onClick={() => fileInputRef.current?.click()}
                                                     className="btn-brutal-accent text-lg"
                                                 >
-                                                    CHOOSE FILE! 🚀
+                                                    CHOISIR UN FICHIER ! 🚀
                                                 </button>
                                             </div>
                                         </div>
@@ -245,7 +243,7 @@ export default function HostPage() {
                                             <div className="space-y-4">
                                                 <input
                                                     type="text"
-                                                    placeholder="Search quizzes..."
+                                                    placeholder="Rechercher des quiz..."
                                                     value={librarySearch}
                                                     onChange={(e) => setLibrarySearch(e.target.value)}
                                                     className="w-full px-4 py-3 text-lg font-medium border-3 border-black shadow-brutal"
@@ -254,19 +252,19 @@ export default function HostPage() {
                                                     <button
                                                         onClick={() => setSelectedCategory('all')}
                                                         className={`px-4 py-2 font-bold border-2 border-black shadow-brutal ${selectedCategory === 'all'
-                                                                ? 'bg-secondary-400 text-white'
-                                                                : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                            ? 'bg-secondary-400 text-white'
+                                                            : 'bg-white text-neutral-700 hover:bg-neutral-100'
                                                             }`}
                                                     >
-                                                        🌟 ALL
+                                                        🌟 TOUT
                                                     </button>
                                                     {categories.map(category => (
                                                         <button
                                                             key={category}
                                                             onClick={() => setSelectedCategory(category)}
                                                             className={`px-4 py-2 font-bold border-2 border-black shadow-brutal ${selectedCategory === category
-                                                                    ? 'bg-secondary-400 text-white'
-                                                                    : 'bg-white text-neutral-700 hover:bg-neutral-100'
+                                                                ? 'bg-secondary-400 text-white'
+                                                                : 'bg-white text-neutral-700 hover:bg-neutral-100'
                                                                 }`}
                                                         >
                                                             {getCategoryDisplay(category).toUpperCase()}
@@ -306,7 +304,7 @@ export default function HostPage() {
                                                 {filteredQuizzes.length === 0 && (
                                                     <div className="text-center py-8 text-neutral-600">
                                                         <div className="text-4xl mb-2">😔</div>
-                                                        <p className="font-medium">No quizzes found matching your criteria.</p>
+                                                        <p className="font-medium">Aucun quiz trouvé correspondant à vos critères.</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -325,7 +323,7 @@ export default function HostPage() {
                                         onClick={() => { setQuiz(null); setShowLibrary(false); }}
                                         className="btn-brutal-danger text-sm"
                                     >
-                                        CHANGE QUIZ
+                                        CHANGER DE QUIZ
                                     </button>
                                 </div>
 
@@ -361,7 +359,7 @@ export default function HostPage() {
                                     onClick={createRoom}
                                     className="btn-brutal-secondary w-full text-xl"
                                 >
-                                    CREATE ROOM! 🎯
+                                    CRÉER LA SALLE ! 🎯
                                 </button>
                             </div>
                         )}
@@ -369,7 +367,7 @@ export default function HostPage() {
                         {/* Game Controls */}
                         {roomId && gameStatus !== 'setup' && (
                             <div className="card-brutal-accent">
-                                <h2 className="text-brutal text-2xl mb-6">GAME CONTROLS 🎮</h2>
+                                <h2 className="text-brutal text-2xl mb-6">CONTRÔLES DE JEU 🎮</h2>
 
                                 {gameStatus === 'waiting' && (
                                     <button
@@ -377,7 +375,7 @@ export default function HostPage() {
                                         disabled={players.length === 0}
                                         className={`w-full text-xl ${players.length === 0 ? 'bg-neutral-400 border-neutral-600 text-neutral-700 cursor-not-allowed' : 'btn-brutal-secondary'}`}
                                     >
-                                        START GAME! ({players.length} players) 🚀
+                                        DÉMARRER LE JEU ! ({players.length} joueurs) 🚀
                                     </button>
                                 )}
 
@@ -385,14 +383,14 @@ export default function HostPage() {
                                     <div className="space-y-6">
                                         <div className="bg-white border-4 border-black p-6 shadow-brutal">
                                             <h3 className="text-brutal text-lg mb-3">
-                                                QUESTION {currentQuestion.index + 1} OF {currentQuestion.total}
+                                                QUESTION {currentQuestion.index + 1} SUR {currentQuestion.total}
                                             </h3>
                                             <p className="text-neutral-800 font-medium text-lg">{currentQuestion.text}</p>
                                         </div>
 
                                         <div className="text-center">
                                             <p className="text-neutral-700 mb-3 font-bold text-lg">
-                                                ANSWERS: {answersCount.received} / {answersCount.total}
+                                                RÉPONSES : {answersCount.received} / {answersCount.total}
                                             </p>
                                             <div className="w-full bg-neutral-200 border-3 border-black h-6">
                                                 <div
@@ -408,13 +406,13 @@ export default function HostPage() {
                                                 disabled={answersCount.received === 0}
                                                 className={`flex-1 text-lg ${answersCount.received === 0 ? 'bg-neutral-400 border-neutral-600 text-neutral-700 cursor-not-allowed' : 'btn-brutal-accent'}`}
                                             >
-                                                REVEAL ANSWER! 💡
+                                                RÉVÉLER LA RÉPONSE ! 💡
                                             </button>
                                             <button
                                                 onClick={nextQuestion}
                                                 className="flex-1 btn-brutal-primary text-lg"
                                             >
-                                                {currentQuestion.index + 1 >= currentQuestion.total ? 'FINISH GAME! 🏁' : 'NEXT QUESTION! ➡️'}
+                                                {currentQuestion.index + 1 >= currentQuestion.total ? 'TERMINER LE JEU ! 🏁' : 'QUESTION SUIVANTE ! ➡️'}
                                             </button>
                                         </div>
                                     </div>
@@ -423,8 +421,8 @@ export default function HostPage() {
                                 {gameStatus === 'finished' && (
                                     <div className="text-center">
                                         <div className="text-6xl mb-4">🎉</div>
-                                        <h3 className="text-brutal text-2xl mb-2">GAME FINISHED!</h3>
-                                        <p className="text-neutral-700 font-medium text-lg">Check the epic final leaderboard below! 🏆</p>
+                                        <h3 className="text-brutal text-2xl mb-2">JEU TERMINÉ !</h3>
+                                        <p className="text-neutral-700 font-medium text-lg">Consultez le classement final épique ci-dessous ! 🏆</p>
                                     </div>
                                 )}
                             </div>
@@ -433,16 +431,16 @@ export default function HostPage() {
                         {/* Last Answer Result */}
                         {lastAnswerResult && (
                             <div className="bg-white rounded-lg shadow-sm p-6">
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Last Question Results</h2>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Résultats de la dernière question</h2>
                                 <p className="text-lg font-medium text-green-600 mb-4">
-                                    Correct Answer: {lastAnswerResult.correctAnswer}
+                                    Réponse correcte : {lastAnswerResult.correctAnswer}
                                 </p>
                                 <div className="space-y-2">
                                     {lastAnswerResult.scores.map((result, index) => (
                                         <div key={result.playerId} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                                             <span>{result.nickname}: {result.answer}</span>
                                             <div className="text-right">
-                                                <span className="text-gray-600">Diff: {result.diff}</span>
+                                                <span className="text-gray-600">Diff : {result.diff}</span>
                                                 {result.pointsEarned > 0 && (
                                                     <span className="ml-2 text-green-600 font-medium">+{result.pointsEarned} pt</span>
                                                 )}
@@ -459,15 +457,15 @@ export default function HostPage() {
                         {/* Room Info */}
                         {roomId && (
                             <div className="bg-white rounded-lg shadow-sm p-6">
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Room Information</h2>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Informations de la salle</h2>
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Room Code</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Code de salle</label>
                                         <div className="text-2xl font-mono font-bold text-primary-600">{roomId}</div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Join URL</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">URL de participation</label>
                                         <div className="text-sm text-gray-600 break-all">{joinUrl}</div>
                                     </div>
 
@@ -478,7 +476,7 @@ export default function HostPage() {
                                             value={joinUrl}
                                             className="mx-auto"
                                         />
-                                        <p className="text-sm text-gray-600 mt-2">Scan to join</p>
+                                        <p className="text-sm text-gray-600 mt-2">Scanner pour rejoindre</p>
                                     </div>
                                 </div>
                             </div>
@@ -487,11 +485,11 @@ export default function HostPage() {
                         {/* Players List */}
                         <div className="bg-white rounded-lg shadow-sm p-6">
                             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                                Players ({players.length})
+                                Joueurs ({players.length})
                             </h2>
                             {players.length === 0 ? (
                                 <p className="text-gray-600 text-center py-8">
-                                    Waiting for players to join...
+                                    En attente de l'arrivée des joueurs...
                                 </p>
                             ) : (
                                 <div className="space-y-2">
@@ -508,7 +506,7 @@ export default function HostPage() {
                         {/* Final Leaderboard */}
                         {gameStatus === 'finished' && finalLeaderboard.length > 0 && (
                             <div className="bg-white rounded-lg shadow-sm p-6">
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">🏆 Final Leaderboard</h2>
+                                <h2 className="text-xl font-semibold text-gray-900 mb-4">🏆 Classement final</h2>
                                 <div className="space-y-2">
                                     {finalLeaderboard.map((player, index) => (
                                         <div key={index} className={`flex items-center justify-between p-3 rounded-lg ${index === 0 ? 'bg-yellow-50 border border-yellow-200' :

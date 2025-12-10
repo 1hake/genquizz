@@ -85,7 +85,7 @@ app.prepare().then(() => {
         socket.on('host:startGame', (data) => {
             const room = rooms.get(data.roomId);
             if (!room || room.hostSocketId !== socket.id) {
-                socket.emit('error', { message: 'Invalid room or not host' });
+                socket.emit('error', { message: 'Salle invalide ou pas l\'hôte' });
                 return;
             }
 
@@ -106,7 +106,7 @@ app.prepare().then(() => {
         socket.on('host:nextQuestion', (data) => {
             const room = rooms.get(data.roomId);
             if (!room || room.hostSocketId !== socket.id) {
-                socket.emit('error', { message: 'Invalid room or not host' });
+                socket.emit('error', { message: 'Salle invalide ou pas l\'hôte' });
                 return;
             }
 
@@ -138,7 +138,7 @@ app.prepare().then(() => {
         socket.on('host:revealAnswer', (data) => {
             const room = rooms.get(data.roomId);
             if (!room || room.hostSocketId !== socket.id || room.currentQuestionIndex < 0) {
-                socket.emit('error', { message: 'Invalid room, not host, or no active question' });
+                socket.emit('error', { message: 'Salle invalide, pas l\'hôte, ou aucune question active' });
                 return;
             }
 
@@ -147,7 +147,7 @@ app.prepare().then(() => {
             const answers = room.answers[questionIndex] || [];
 
             if (answers.length === 0) {
-                socket.emit('error', { message: 'No answers received yet' });
+                socket.emit('error', { message: 'Aucune réponse reçue pour le moment' });
                 return;
             }
 
@@ -185,18 +185,18 @@ app.prepare().then(() => {
         socket.on('player:join', (data) => {
             const room = rooms.get(data.roomId);
             if (!room) {
-                socket.emit('player:joinResult', { success: false, message: 'Room not found' });
+                socket.emit('player:joinResult', { success: false, message: 'Salle introuvable' });
                 return;
             }
 
             if (room.status !== 'waiting') {
-                socket.emit('player:joinResult', { success: false, message: 'Game already in progress' });
+                socket.emit('player:joinResult', { success: false, message: 'Jeu déjà en cours' });
                 return;
             }
 
             // Check if nickname already exists
             if (room.players.some(p => p.nickname === data.nickname)) {
-                socket.emit('player:joinResult', { success: false, message: 'Nickname already taken' });
+                socket.emit('player:joinResult', { success: false, message: 'Pseudonyme déjà pris' });
                 return;
             }
 
@@ -225,7 +225,7 @@ app.prepare().then(() => {
         socket.on('player:answer', (data) => {
             const room = rooms.get(data.roomId);
             if (!room || room.status !== 'in-progress' || room.currentQuestionIndex < 0) {
-                socket.emit('error', { message: 'Invalid room or game not in progress' });
+                socket.emit('error', { message: 'Salle invalide ou jeu pas en cours' });
                 return;
             }
 
@@ -239,7 +239,7 @@ app.prepare().then(() => {
             // Check if player already answered this question
             const existingAnswer = room.answers[questionIndex].find(a => a.playerId === socket.id);
             if (existingAnswer) {
-                socket.emit('error', { message: 'You already answered this question' });
+                socket.emit('error', { message: 'Vous avez déjà répondu à cette question' });
                 return;
             }
 

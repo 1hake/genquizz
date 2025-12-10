@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: 'GenQuizz - Real-time Quiz Game',
-    description: 'Create and play real-time quiz games with numeric answers',
+    title: 'Au plus proche - Jeu de quiz en temps réel',
+    description: 'Créez et jouez à des quiz en temps réel avec des réponses numériques',
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="fr">
             <body className={inter.className}>{children}</body>
         </html>
     );

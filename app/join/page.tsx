@@ -14,12 +14,12 @@ export default function JoinPage() {
         e.preventDefault();
 
         if (!roomCode.trim()) {
-            setError('Please enter a room code');
+            setError('Veuillez entrer un code de salle');
             return;
         }
 
         if (!nickname.trim()) {
-            setError('Please enter a nickname');
+            setError('Veuillez entrer un pseudonyme');
             return;
         }
 
@@ -32,10 +32,10 @@ export default function JoinPage() {
             <div className="max-w-lg w-full">
                 <div className="text-center mb-8">
                     <h1 className="text-5xl md:text-6xl font-black text-black mb-4 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
-                        JOIN GAME!
+                        REJOINDRE !
                     </h1>
                     <div className="text-6xl mb-4 animate-bounce-slow">🎮</div>
-                    <p className="text-xl text-neutral-800 font-medium">Enter your details to join an active quiz!</p>
+                    <p className="text-xl text-neutral-800 font-medium">Entrez vos informations pour rejoindre un quiz actif !</p>
                 </div>
 
                 <div className="card-brutal-secondary mb-8">
@@ -51,7 +51,7 @@ export default function JoinPage() {
                     <form onSubmit={handleJoin} className="space-y-6">
                         <div>
                             <label htmlFor="roomCode" className="block text-brutal text-lg mb-3">
-                                ROOM CODE
+                                CODE DE SALLE
                             </label>
                             <input
                                 type="text"
@@ -66,14 +66,14 @@ export default function JoinPage() {
 
                         <div>
                             <label htmlFor="nickname" className="block text-brutal text-lg mb-3">
-                                YOUR NICKNAME
+                                VOTRE PSEUDONYME
                             </label>
                             <input
                                 type="text"
                                 id="nickname"
                                 value={nickname}
                                 onChange={(e) => setNickname(e.target.value)}
-                                placeholder="Enter your epic name!"
+                                placeholder="Entrez votre nom épique !"
                                 className="input-brutal"
                                 maxLength={20}
                             />
@@ -83,7 +83,7 @@ export default function JoinPage() {
                             type="submit"
                             className="btn-brutal-secondary w-full text-2xl"
                         >
-                            JOIN GAME! 🚀
+                            REJOINDRE ! 🚀
                         </button>
                     </form>
                 </div>
@@ -93,24 +93,24 @@ export default function JoinPage() {
                         href="/"
                         className="btn-brutal-danger"
                     >
-                        ← BACK HOME
+                        ← RETOUR ACCUEIL
                     </Link>
                 </div>
 
                 <div className="card-brutal-accent">
-                    <h3 className="text-brutal text-lg mb-4">TIPS & TRICKS 💡</h3>
+                    <h3 className="text-brutal text-lg mb-4">ASTUCES & CONSEILS 💡</h3>
                     <ul className="text-sm text-neutral-800 space-y-2 font-medium">
                         <li className="flex items-start">
                             <span className="text-2xl mr-2">🔤</span>
-                            The room code is usually 6 characters long
+                            Le code de salle fait généralement 6 caractères
                         </li>
                         <li className="flex items-start">
                             <span className="text-2xl mr-2">🎯</span>
-                            Choose a unique nickname that others will see
+                            Choisissez un pseudonyme unique que les autres verront
                         </li>
                         <li className="flex items-start">
                             <span className="text-2xl mr-2">📶</span>
-                            Make sure you have a stable internet connection
+                            Assurez-vous d'avoir une connexion internet stable
                         </li>
                     </ul>
                 </div>

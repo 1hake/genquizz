@@ -91,14 +91,14 @@ export function searchQuizzes(searchTerm: string): QuizLibraryItem[] {
  */
 export function getCategoryDisplay(category: string): string {
     const categoryMap: Record<string, string> = {
-        'general': '🌍 General',
+        'general': '🌍 Général',
         'science': '🔬 Science',
-        'entertainment': '🎬 Entertainment',
-        'geography': '🗺️ Geography',
-        'math': '📐 Math',
-        'history': '📚 History',
+        'entertainment': '🎬 Divertissement',
+        'geography': '🗺️ Géographie',
+        'math': '📐 Mathématiques',
+        'history': '📚 Histoire',
         'sports': '⚽ Sports',
-        'animals': '🐾 Animals'
+        'animals': '🐾 Animaux'
     };
 
     return categoryMap[category] || `📋 ${category}`;
@@ -109,9 +109,9 @@ export function getCategoryDisplay(category: string): string {
  */
 export function getDifficultyDisplay(difficulty: 'easy' | 'medium' | 'hard'): { text: string; color: string } {
     const difficultyMap = {
-        'easy': { text: '🟢 Easy', color: 'text-green-600' },
-        'medium': { text: '🟡 Medium', color: 'text-yellow-600' },
-        'hard': { text: '🔴 Hard', color: 'text-red-600' }
+        'easy': { text: '🟢 Facile', color: 'text-green-600' },
+        'medium': { text: '🟡 Moyen', color: 'text-yellow-600' },
+        'hard': { text: '🔴 Difficile', color: 'text-red-600' }
     };
 
     return difficultyMap[difficulty];

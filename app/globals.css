@@ -90,24 +90,28 @@
 
     /* Mobile-first responsive adjustments */
     @media (max-width: 640px) {
-        .card-brutal, .card-brutal-primary, .card-brutal-secondary, 
-        .card-brutal-accent, .card-brutal-danger {
+
+        .card-brutal,
+        .card-brutal-primary,
+        .card-brutal-secondary,
+        .card-brutal-accent,
+        .card-brutal-danger {
             @apply p-4;
         }
-        
+
         .btn-brutal {
             @apply px-4 py-3;
         }
-        
+
         .text-brutal {
             @apply tracking-wide;
         }
-        
+
         /* Smaller shadows on mobile for better touch targets */
         .shadow-brutal {
             box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
         }
-        
+
         .shadow-brutal-lg {
             box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
         }
@@ -130,9 +134,10 @@
     /* Utility for preventing scrolling on mobile */
     .h-screen-mobile {
         height: 100vh;
-        height: 100dvh; /* Use dynamic viewport height on mobile */
+        height: 100dvh;
+        /* Use dynamic viewport height on mobile */
     }
-    
+
     /* Safe area padding for mobile devices with notches */
     .safe-area-inset {
         padding-top: env(safe-area-inset-top);

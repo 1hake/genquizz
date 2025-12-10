@@ -1,91 +1,91 @@
-# GenQuizz - Real-time Quiz Game
+# Au plus proche - Jeu de quiz en temps réel
 
-A real-time quiz web application where hosts create numeric answer quizzes and players compete to give the closest answers. Built with Next.js, Socket.IO, and TypeScript.
+Une application web de quiz en temps réel où les hôtes créent des quiz avec des réponses numériques et les joueurs rivalisent pour donner les réponses les plus proches. Construit avec Next.js, Socket.IO et TypeScript.
 
-## Features
+## Fonctionnalités
 
-- **Host Dashboard**: Upload quiz JSON files, create rooms, control game flow
-- **Real-time Gameplay**: Live questions, answers, and leaderboards
-- **QR Code Sharing**: Easy room joining via QR codes
-- **Scoring System**: Players with closest numeric answers earn points
-- **Mobile Friendly**: Responsive design for all devices
-- **No Database Required**: In-memory storage for quick setup
+- **Tableau de bord hôte** : Téléchargez des fichiers JSON de quiz, créez des salles, contrôlez le déroulement du jeu
+- **Jeu en temps réel** : Questions, réponses et classements en direct
+- **Partage par QR Code** : Rejoindre facilement les salles via des QR codes
+- **Système de notation** : Les joueurs avec les réponses numériques les plus proches gagnent des points
+- **Compatible mobile** : Design responsive pour tous les appareils
+- **Aucune base de données requise** : Stockage en mémoire pour une configuration rapide
 
-## Quick Start
+## Démarrage rapide
 
 ### Installation
 
 ```bash
-# Install dependencies
+# Installer les dépendances
 npm install
 
-# Start the development server (includes Socket.IO server)
+# Démarrer le serveur de développement (inclut le serveur Socket.IO)
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`.
+L'application sera disponible à `http://localhost:3000`.
 
-### Running the Game
+### Utilisation du jeu
 
-1. **Host a Quiz**:
-   - Go to `/host`
-   - Upload a quiz JSON file (see format below)
-   - Create a room and share the QR code or room code
+1. **Héberger un quiz** :
+   - Allez sur `/host`
+   - Téléchargez un fichier JSON de quiz (voir le format ci-dessous)
+   - Créez une salle et partagez le QR code ou le code de salle
 
-2. **Join as Player**:
-   - Go to `/join` or scan the QR code
-   - Enter room code and nickname
-   - Answer questions with numeric values
+2. **Rejoindre en tant que joueur** :
+   - Allez sur `/join` ou scannez le QR code
+   - Entrez le code de salle et votre pseudonyme
+   - Répondez aux questions avec des valeurs numériques
 
-3. **Game Flow**:
-   - Host starts the game
-   - Questions are sent one by one
-   - Host reveals answers and shows scoring
-   - Final leaderboard shown at the end
+3. **Déroulement du jeu** :
+   - L'hôte démarre le jeu
+   - Les questions sont envoyées une par une
+   - L'hôte révèle les réponses et montre les scores
+   - Le classement final est affiché à la fin
 
-## Quiz File Format
+## Format de fichier de quiz
 
-Create a JSON file with the following structure:
+Créez un fichier JSON avec la structure suivante :
 
 ```json
 {
-  "title": "Your Quiz Title",
+  "title": "Titre de votre quiz",
   "questions": [
     {
       "id": 1,
-      "text": "What is the population of Paris?",
+      "text": "Quelle est la population de Paris ?",
       "answer": 2200000
     },
     {
       "id": 2,
-      "text": "Height of Mount Everest in meters?",
+      "text": "Hauteur du mont Everest en mètres ?",
       "answer": 8849
     }
   ]
 }
 ```
 
-### Requirements:
-- `title`: String - Name of your quiz
-- `questions`: Array - List of questions
-  - `id`: Number - Unique identifier for each question
-  - `text`: String - The question text
-  - `answer`: Number - The correct numeric answer
+### Exigences :
+- `title` : String - Nom de votre quiz
+- `questions` : Array - Liste des questions
+  - `id` : Number - Identifiant unique pour chaque question
+  - `text` : String - Le texte de la question
+  - `answer` : Number - La réponse numérique correcte
 
-An example quiz file is included: `example-quiz.json`
+Un exemple de fichier de quiz est inclus : `example-quiz.json`
 
-## Game Rules
+## Règles du jeu
 
-### Scoring System
-- Each question awards **1 point** to the player(s) with the closest numeric answer
-- Ties are allowed - multiple players can earn points if they have the same closest difference
-- Final leaderboard ranks players by total points earned
+### Système de notation
+- Chaque question accorde **1 point** au(x) joueur(s) avec la réponse numérique la plus proche
+- Les égalités sont autorisées - plusieurs joueurs peuvent gagner des points s'ils ont la même différence la plus proche
+- Le classement final classe les joueurs par total de points gagnés
 
-### Question Types
-- All questions must have numeric answers
-- Players enter their best guess as a number
-- The game calculates the absolute difference between player answers and the correct answer
-- Closest answer(s) win the round
+### Types de questions
+- Toutes les questions doivent avoir des réponses numériques
+- Les joueurs entrent leur meilleure estimation sous forme de nombre
+- Le jeu calcule la différence absolue entre les réponses des joueurs et la réponse correcte
+- La ou les réponses les plus proches gagnent le tour
 
 ## Architecture
 
