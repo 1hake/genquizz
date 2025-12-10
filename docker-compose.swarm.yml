@@ -1,0 +1,49 @@
+version: '3.8'
+
+# Production Swarm configuration
+services:
+    genquizz:
+        image: genquizz:latest
+        deploy:
+            replicas: 2
+            restart_policy:
+                condition: any
+                delay: 5s
+                max_attempts: 3
+                window: 120s
+            update_config:
+                parallelism: 1
+                delay: 10s
+                failure_action: rollback
+            resources:
+                limits:
+                    memory: 512M
+                reservations:
+                    memory: 256M
+        labels:
+            - 'traefik.enable=true'
+            # HTTP router for redirect
+            - 'traefik.http.routers.genquizz-http.rule=Host(`quizz.gobc.fr`)'
+            - 'traefik.http.routers.genquizz-http.entrypoints=web'
+            - 'traefik.http.routers.genquizz-http.middlewares=redirect-to-https'
+            # HTTPS router
+            - 'traefik.http.routers.genquizz.rule=Host(`quizz.gobc.fr`)'
+            - 'traefik.http.routers.genquizz.entrypoints=websecure'
+            - 'traefik.http.routers.genquizz.tls.certresolver=myresolver'
+            # Middleware for HTTPS redirect
+            - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+            - 'traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true'
+            # Service configuration
+            - 'traefik.http.services.genquizz.loadbalancer.server.port=3000'
+            # Enable sticky sessions for WebSocket support
+            - 'traefik.http.services.genquizz.loadbalancer.sticky.cookie=true'
+            - 'traefik.http.services.genquizz.loadbalancer.sticky.cookie.name=genquizz-session'
+        environment:
+            NODE_ENV: production
+            PORT: 3000
+        networks:
+            - webnet
+
+networks:
+    webnet:
+        external: true

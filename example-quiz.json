@@ -1,0 +1,30 @@
+{
+    "title": "Culture générale",
+    "questions": [
+        {
+            "id": 1,
+            "text": "Population de Paris (intra-muros) ?",
+            "answer": 2200000
+        },
+        {
+            "id": 2,
+            "text": "Hauteur de l'Everest en mètres ?",
+            "answer": 8849
+        },
+        {
+            "id": 3,
+            "text": "Année de la première mission Apollo sur la Lune ?",
+            "answer": 1969
+        },
+        {
+            "id": 4,
+            "text": "Nombre d'éléments dans le tableau périodique ?",
+            "answer": 118
+        },
+        {
+            "id": 5,
+            "text": "Vitesse de la lumière en km/s ?",
+            "answer": 299792458
+        }
+    ]
+}
