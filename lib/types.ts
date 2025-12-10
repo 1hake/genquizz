@@ -60,6 +60,7 @@ export interface ClientToServerEvents {
 
 // Client-side socket type
 export type SocketType = {
+    id: string;
     emit: <K extends keyof ClientToServerEvents>(event: K, data: Parameters<ClientToServerEvents[K]>[0]) => void;
     on: <K extends keyof ServerToClientEvents>(event: K, listener: ServerToClientEvents[K]) => void;
     off: <K extends keyof ServerToClientEvents>(event: K, listener?: ServerToClientEvents[K]) => void;

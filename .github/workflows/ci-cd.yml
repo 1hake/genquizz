@@ -29,7 +29,7 @@ jobs:
                   file: ./Dockerfile
                   target: production
                   push: true
-                  tags: thegobc/arkneamassage:latest
+                  tags: thegobc/genquizz:latest
 
             - name: Copy docker-compose files to server
               uses: appleboy/scp-action@v0.1.7
@@ -38,7 +38,7 @@ jobs:
                   username: 'root'
                   key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
                   source: './docker-compose.swarm.yml'
-                  target: './arkneamassage'
+                  target: './genquizz'
 
             - name: SSH and update Docker Swarm service
               uses: appleboy/ssh-action@v0.1.6
@@ -47,6 +47,6 @@ jobs:
                   username: 'root'
                   key: ${{ secrets.SSH_PRIVATE_KEY_NOPW }}
                   script: |
-                      cd arkneamassage
-                      docker stack deploy -c docker-compose.swarm.yml arkneamassage-stack
-                      docker service update --image thegobc/arkneamassage:latest --force arkneamassage-stack_arkneamassage
+                      cd genquizz
+                      docker stack deploy -c docker-compose.swarm.yml genquizz-stack
+                      docker service update --image thegobc/genquizz:latest --force genquizz-stack_genquizz
