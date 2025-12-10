@@ -70,6 +70,48 @@
     .gradient-brutal {
         background: linear-gradient(135deg, #f3a4fc 0%, #86efac 50%, #fcd34d 100%);
     }
+
+    /* Mobile-optimized numeric input */
+    .input-brutal-numeric {
+        @apply input-brutal;
+        /* Remove number input spinners on all browsers */
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        /* Optimize for mobile numeric input */
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.05em;
+    }
+
+    .input-brutal-numeric::-webkit-outer-spin-button,
+    .input-brutal-numeric::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Mobile-first responsive adjustments */
+    @media (max-width: 640px) {
+        .card-brutal, .card-brutal-primary, .card-brutal-secondary, 
+        .card-brutal-accent, .card-brutal-danger {
+            @apply p-4;
+        }
+        
+        .btn-brutal {
+            @apply px-4 py-3;
+        }
+        
+        .text-brutal {
+            @apply tracking-wide;
+        }
+        
+        /* Smaller shadows on mobile for better touch targets */
+        .shadow-brutal {
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .shadow-brutal-lg {
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+        }
+    }
 }
 
 @layer utilities {
@@ -83,5 +125,19 @@
 
     .rotate-y-12 {
         transform: rotateY(12deg);
+    }
+
+    /* Utility for preventing scrolling on mobile */
+    .h-screen-mobile {
+        height: 100vh;
+        height: 100dvh; /* Use dynamic viewport height on mobile */
+    }
+    
+    /* Safe area padding for mobile devices with notches */
+    .safe-area-inset {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
     }
 }

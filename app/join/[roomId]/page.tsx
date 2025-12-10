@@ -47,7 +47,7 @@ export default function PlayerGamePage() {
 
     useEffect(() => {
         if (!roomId) {
-            setError('Invalid room code');
+            setError('Code de salle invalide');
             setGameState('error');
             return;
         }
@@ -65,7 +65,7 @@ export default function PlayerGamePage() {
                 setGameState('waiting');
                 setError('');
             } else {
-                setError(data.message || 'Failed to join room');
+                setError(data.message || 'Échec de rejoindre la salle');
                 setGameState('error');
             }
         });
@@ -103,7 +103,7 @@ export default function PlayerGamePage() {
         });
 
         socket.on('host:disconnected', () => {
-            setError('Host disconnected. Game ended.');
+            setError('L\'hôte s\'est déconnecté. Partie terminée.');
             setGameState('error');
         });
 
@@ -125,7 +125,7 @@ export default function PlayerGamePage() {
 
     const joinRoom = (playerNickname: string) => {
         if (!playerNickname.trim()) {
-            setError('Please enter a nickname');
+            setError('Veuillez entrer un pseudonyme');
             return;
         }
 
@@ -143,7 +143,7 @@ export default function PlayerGamePage() {
     const submitAnswer = () => {
         const numericAnswer = validateNumericInput(answer);
         if (numericAnswer === null) {
-            setError('Please enter a valid number');
+            setError('Veuillez entrer un nombre valide');
             return;
         }
 
@@ -169,27 +169,27 @@ export default function PlayerGamePage() {
     // Nickname input screen
     if (gameState === 'connecting' && !nicknameFromUrl) {
         return (
-            <div className="min-h-screen gradient-brutal flex items-center justify-center p-4">
-                <div className="max-w-lg w-full">
+            <div className="h-screen-mobile gradient-brutal flex flex-col justify-center p-4 overflow-hidden safe-area-inset">
+                <div className="max-w-sm mx-auto w-full">
                     <div className="card-brutal-primary">
-                        <div className="text-center mb-8">
-                            <div className="text-6xl mb-4">🎮</div>
-                            <h1 className="text-brutal text-2xl md:text-3xl mb-3">JOINING ROOM</h1>
-                            <p className="text-neutral-800 font-medium text-lg">Room: <span className="font-mono font-black text-2xl">{roomId}</span></p>
+                        <div className="text-center mb-6">
+                            <div className="text-4xl mb-3">🎮</div>
+                            <h1 className="text-brutal text-xl mb-2">REJOINDRE LA SALLE</h1>
+                            <p className="text-neutral-800 font-medium">Salle : <span className="font-mono font-black text-xl">{roomId}</span></p>
                         </div>
 
-                        <form onSubmit={handleNicknameSubmit} className="space-y-6">
+                        <form onSubmit={handleNicknameSubmit} className="space-y-4">
                             <div>
-                                <label htmlFor="nickname" className="block text-brutal text-lg mb-3">
-                                    YOUR EPIC NICKNAME
+                                <label htmlFor="nickname" className="block text-brutal text-sm mb-2">
+                                    VOTRE PSEUDONYME
                                 </label>
                                 <input
                                     type="text"
                                     id="nickname"
                                     value={nickname}
                                     onChange={(e) => setNickname(e.target.value)}
-                                    placeholder="Enter your awesome name!"
-                                    className="input-brutal text-xl"
+                                    placeholder="Votre nom"
+                                    className="input-brutal text-lg"
                                     maxLength={20}
                                     required
                                 />
@@ -197,17 +197,17 @@ export default function PlayerGamePage() {
 
                             <button
                                 type="submit"
-                                className="btn-brutal-secondary w-full text-xl"
+                                className="btn-brutal-secondary w-full text-lg py-4"
                             >
-                                JOIN GAME! 🚀
+                                REJOINDRE ! 🚀
                             </button>
                         </form>
 
                         {error && (
-                            <div className="card-brutal-danger mt-6">
+                            <div className="card-brutal-danger mt-4">
                                 <div className="flex items-center">
-                                    <span className="text-3xl mr-3">⚠️</span>
-                                    <p className="font-bold text-lg">{error}</p>
+                                    <span className="text-xl mr-2">⚠️</span>
+                                    <p className="font-bold text-sm">{error}</p>
                                 </div>
                             </div>
                         )}
@@ -220,17 +220,17 @@ export default function PlayerGamePage() {
     // Error state
     if (gameState === 'error') {
         return (
-            <div className="min-h-screen gradient-brutal flex items-center justify-center p-4">
-                <div className="max-w-lg w-full">
+            <div className="h-screen-mobile gradient-brutal flex flex-col justify-center p-4 overflow-hidden safe-area-inset">
+                <div className="max-w-sm mx-auto w-full">
                     <div className="card-brutal-danger text-center">
-                        <div className="text-8xl mb-6">😞</div>
-                        <h1 className="text-brutal text-3xl mb-4">OOPS!</h1>
-                        <p className="text-neutral-800 font-medium text-lg mb-8">{error}</p>
+                        <div className="text-6xl mb-4">😞</div>
+                        <h1 className="text-brutal text-2xl mb-3">OUPS !</h1>
+                        <p className="text-neutral-800 font-medium text-base mb-6">{error}</p>
                         <Link
                             href="/join"
-                            className="btn-brutal-secondary text-xl"
+                            className="btn-brutal-secondary text-lg py-4 px-6"
                         >
-                            TRY AGAIN! 🔄
+                            ESSAYER ENCORE ! 🔄
                         </Link>
                     </div>
                 </div>
@@ -239,206 +239,228 @@ export default function PlayerGamePage() {
     }
 
     return (
-        <div className="min-h-screen gradient-brutal p-4">
-            <div className="max-w-3xl mx-auto">
-                {/* Header */}
-                <div className="card-brutal mb-8">
+        <div className="h-screen-mobile gradient-brutal flex flex-col overflow-hidden safe-area-inset">
+            {/* Fixed Header */}
+            <div className="flex-shrink-0 p-3">
+                <div className="card-brutal">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-brutal text-2xl md:text-3xl mb-1">QUIZ GAME 🎯</h1>
-                            <p className="text-neutral-700 font-medium">Playing as: <span className="font-black">{nickname}</span></p>
+                            <h1 className="text-brutal text-lg mb-1">QUIZ 🎯</h1>
+                            <p className="text-neutral-700 font-medium text-sm">
+                                <span className="font-black">{nickname}</span>
+                            </p>
                         </div>
                         <div className="text-right">
-                            <div className="text-sm font-bold text-neutral-600">ROOM:</div>
-                            <div className="font-mono font-black text-2xl">{roomId}</div>
+                            <div className="text-xs font-bold text-neutral-600">SALLE</div>
+                            <div className="font-mono font-black text-lg">{roomId}</div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* Game Content */}
-                <div className="card-brutal-primary">
+            {/* Flexible Content Area */}
+            <div className="flex-1 flex flex-col p-3 pt-0 min-h-0">
+                <div className="card-brutal-primary flex-1 flex flex-col min-h-0">
                     {/* Waiting for game to start */}
                     {gameState === 'waiting' && (
-                        <div className="text-center">
-                            <div className="text-8xl mb-8 animate-pulse-slow">⏳</div>
-                            <h2 className="text-brutal text-3xl mb-6">WAITING FOR HOST</h2>
-                            <p className="text-neutral-800 font-medium text-lg">The host will start the epic game soon...</p>
+                        <div className="flex flex-col items-center justify-center text-center h-full">
+                            <div className="text-6xl mb-6 animate-pulse-slow">⏳</div>
+                            <h2 className="text-brutal text-xl mb-4">EN ATTENTE</h2>
+                            <p className="text-neutral-800 font-medium">L'hôte va démarrer le jeu...</p>
                         </div>
                     )}
 
                     {/* Question and Answer Input */}
                     {gameState === 'answering' && currentQuestion && (
-                        <div className="space-y-8">
-                            <div className="text-center">
-                                <div className="text-brutal text-lg mb-4">
-                                    QUESTION {currentQuestion.questionIndex + 1} OF {currentQuestion.totalQuestions}
+                        <div className="flex flex-col h-full">
+                            {/* Progress bar */}
+                            <div className="mb-4">
+                                <div className="text-brutal text-sm mb-2 text-center">
+                                    QUESTION {currentQuestion.questionIndex + 1}/{currentQuestion.totalQuestions}
                                 </div>
-                                <div className="w-full bg-neutral-200 border-4 border-black h-6 mb-6">
+                                <div className="w-full bg-neutral-200 border-2 border-black h-3">
                                     <div
-                                        className="bg-secondary-400 h-full border-r-4 border-black transition-all duration-500"
+                                        className="bg-secondary-400 h-full border-r-2 border-black transition-all duration-500"
                                         style={{ width: `${((currentQuestion.questionIndex + 1) / currentQuestion.totalQuestions) * 100}%` }}
                                     ></div>
                                 </div>
                             </div>
 
-                            <div className="bg-white border-4 border-black shadow-brutal-lg p-8 text-center transform hover:scale-105 transition-transform duration-200">
-                                <h2 className="text-brutal text-2xl md:text-3xl">{currentQuestion.text}</h2>
-                            </div>
-
-                            <div className="space-y-6">
-                                <div>
-                                    <label htmlFor="answer" className="block text-brutal text-lg mb-3">
-                                        YOUR ANSWER (NUMBERS ONLY) 🔢
-                                    </label>
-                                    <input
-                                        type="number"
-                                        id="answer"
-                                        value={answer}
-                                        onChange={(e) => setAnswer(e.target.value)}
-                                        placeholder="Enter your epic guess!"
-                                        className="input-brutal text-3xl text-center"
-                                    />
+                            {/* Question - scrollable if needed */}
+                            <div className="flex-1 flex flex-col min-h-0">
+                                <div className="bg-white border-4 border-black shadow-brutal p-4 mb-4 min-h-0 flex items-center justify-center">
+                                    <h2 className="text-brutal text-lg text-center leading-tight">{currentQuestion.text}</h2>
                                 </div>
 
-                                <button
-                                    onClick={submitAnswer}
-                                    disabled={!answer.trim()}
-                                    className={`w-full text-2xl ${!answer.trim() ? 'bg-neutral-400 border-neutral-600 text-neutral-700 cursor-not-allowed' : 'btn-brutal-primary'}`}
-                                >
-                                    SUBMIT ANSWER! 🚀
-                                </button>
-                            </div>
-
-                            {error && (
-                                <div className="card-brutal-danger">
-                                    <div className="flex items-center">
-                                        <span className="text-3xl mr-3">⚠️</span>
-                                        <p className="font-bold text-lg">{error}</p>
+                                {/* Answer Input - Fixed at bottom */}
+                                <div className="flex-shrink-0 space-y-3">
+                                    <div>
+                                        <label htmlFor="answer" className="block text-brutal text-sm mb-2">
+                                            VOTRE RÉPONSE 🔢
+                                        </label>
+                                        <input
+                                            type="number"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
+                                            id="answer"
+                                            value={answer}
+                                            onChange={(e) => setAnswer(e.target.value)}
+                                            placeholder="123456"
+                                            className="input-brutal-numeric text-2xl text-center font-bold"
+                                            autoFocus
+                                            autoComplete="off"
+                                            autoCorrect="off"
+                                            autoCapitalize="off"
+                                            spellCheck="false"
+                                        />
                                     </div>
+
+                                    <button
+                                        onClick={submitAnswer}
+                                        disabled={!answer.trim()}
+                                        className={`w-full text-lg py-4 ${!answer.trim() ? 'bg-neutral-400 border-neutral-600 text-neutral-700 cursor-not-allowed border-4' : 'btn-brutal-primary'}`}
+                                    >
+                                        VALIDER ! 🚀
+                                    </button>
+
+                                    {error && (
+                                        <div className="card-brutal-danger p-3">
+                                            <div className="flex items-center">
+                                                <span className="text-xl mr-2">⚠️</span>
+                                                <p className="font-bold text-sm">{error}</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
                     )}
 
                     {/* Answer submitted, waiting for results */}
                     {gameState === 'answered' && currentQuestion && (
-                        <div className="text-center space-y-8">
-                            <div className="text-8xl animate-bounce">✅</div>
-                            <h2 className="text-brutal text-3xl">ANSWER SUBMITTED!</h2>
-                            <div className="bg-white border-4 border-black shadow-brutal-green p-6">
-                                <p className="text-neutral-800 font-medium text-lg">Your answer: <span className="font-black text-3xl text-secondary-600">{myAnswer}</span></p>
+                        <div className="flex flex-col items-center justify-center text-center h-full space-y-6">
+                            <div className="text-6xl animate-bounce">✅</div>
+                            <h2 className="text-brutal text-xl">RÉPONSE SOUMISE !</h2>
+                            <div className="bg-white border-4 border-black shadow-brutal-green p-4 w-full">
+                                <p className="text-neutral-800 font-medium">
+                                    Votre réponse : <span className="font-black text-2xl text-secondary-600">{myAnswer}</span>
+                                </p>
                             </div>
-                            <p className="text-neutral-800 font-medium text-lg">Waiting for other players and host to reveal the answer...</p>
+                            <p className="text-neutral-800 font-medium text-sm">En attente des autres joueurs...</p>
                         </div>
                     )}
 
                     {/* Answer results */}
                     {gameState === 'results' && lastAnswerResult && currentQuestion && (
-                        <div className="space-y-8">
-                            <div className="text-center">
-                                <h2 className="text-brutal text-3xl mb-6">QUESTION RESULTS 📊</h2>
-                                <div className="bg-white border-4 border-black shadow-brutal-yellow p-6">
-                                    <p className="text-neutral-800 font-medium text-lg">
-                                        Correct Answer: <span className="font-black text-4xl text-accent-600">{lastAnswerResult.correctAnswer}</span>
+                        <div className="flex flex-col h-full">
+                            <div className="text-center mb-4">
+                                <h2 className="text-brutal text-lg mb-3">RÉSULTATS 📊</h2>
+                                <div className="bg-white border-4 border-black shadow-brutal-yellow p-3">
+                                    <p className="text-neutral-800 font-medium">
+                                        Bonne réponse : <span className="font-black text-2xl text-accent-600">{lastAnswerResult.correctAnswer}</span>
                                     </p>
                                 </div>
                             </div>
 
-                            {/* My result */}
-                            {(() => {
-                                const myResult = lastAnswerResult.scores.find(s => s.playerId === socket.id);
-                                if (!myResult) return null;
+                            {/* Scrollable results area */}
+                            <div className="flex-1 overflow-y-auto space-y-4 min-h-0">
+                                {/* My result */}
+                                {(() => {
+                                    const myResult = lastAnswerResult.scores.find(s => s.playerId === socket.id);
+                                    if (!myResult) return null;
 
-                                const isWinner = myResult.pointsEarned > 0;
-                                return (
-                                    <div className={`rounded-lg p-4 text-center ${isWinner ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-gray-200'}`}>
-                                        <h3 className="font-bold text-lg mb-2">Your Result</h3>
-                                        <p className="text-gray-700">
-                                            Your answer: <span className="font-bold">{myResult.answer}</span>
-                                        </p>
-                                        <p className="text-gray-700">
-                                            Difference: <span className="font-bold">{myResult.diff}</span>
-                                        </p>
-                                        {isWinner ? (
-                                            <p className="text-green-600 font-bold text-lg">🎉 You got a point! +{myResult.pointsEarned}</p>
-                                        ) : (
-                                            <p className="text-gray-600">No points this round</p>
-                                        )}
-                                    </div>
-                                );
-                            })()}
-
-                            {/* Current leaderboard */}
-                            <div>
-                                <h3 className="font-bold text-lg mb-3 text-center">Current Standings</h3>
-                                <div className="space-y-2">
-                                    {lastAnswerResult.leaderboard.slice(0, 5).map((player, index) => (
-                                        <div key={index} className={`flex items-center justify-between p-3 rounded-lg ${player.nickname === nickname ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50'
-                                            }`}>
-                                            <div className="flex items-center">
-                                                <span className="text-lg mr-3">
-                                                    {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
-                                                </span>
-                                                <span className="font-medium">{player.nickname}</span>
-                                            </div>
-                                            <span className="font-bold text-blue-600">{player.score} pts</span>
+                                    const isWinner = myResult.pointsEarned > 0;
+                                    return (
+                                        <div className={`card-brutal p-3 text-center ${isWinner ? 'bg-green-100' : 'bg-gray-100'}`}>
+                                            <h3 className="font-bold mb-2">Votre résultat</h3>
+                                            <p className="text-sm text-gray-700">
+                                                Votre réponse : <span className="font-bold">{myResult.answer}</span>
+                                            </p>
+                                            <p className="text-sm text-gray-700">
+                                                Écart : <span className="font-bold">{myResult.diff}</span>
+                                            </p>
+                                            {isWinner ? (
+                                                <p className="text-green-600 font-bold">🎉 +{myResult.pointsEarned} point !</p>
+                                            ) : (
+                                                <p className="text-gray-600 text-sm">Aucun point</p>
+                                            )}
                                         </div>
-                                    ))}
+                                    );
+                                })()}
+
+                                {/* Current leaderboard */}
+                                <div>
+                                    <h3 className="font-bold text-center mb-2">Classement</h3>
+                                    <div className="space-y-2">
+                                        {lastAnswerResult.leaderboard.slice(0, 5).map((player, index) => (
+                                            <div key={index} className={`flex items-center justify-between p-2 rounded border-2 border-black ${player.nickname === nickname ? 'bg-blue-100' : 'bg-gray-50'}`}>
+                                                <div className="flex items-center">
+                                                    <span className="mr-2">
+                                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
+                                                    </span>
+                                                    <span className="font-medium text-sm">{player.nickname}</span>
+                                                </div>
+                                                <span className="font-bold text-blue-600 text-sm">{player.score}pts</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="text-center">
-                                <p className="text-gray-600">Waiting for next question...</p>
+                            <div className="text-center pt-3 text-sm text-gray-600">
+                                En attente de la prochaine question...
                             </div>
                         </div>
                     )}
 
                     {/* Final results */}
                     {gameState === 'finished' && finalLeaderboard.length > 0 && (
-                        <div className="space-y-6 text-center">
-                            <div className="text-6xl mb-4">🏁</div>
-                            <h2 className="text-3xl font-bold text-gray-900 mb-6">Game Finished!</h2>
+                        <div className="flex flex-col h-full">
+                            <div className="text-center mb-4">
+                                <div className="text-4xl mb-2">🏁</div>
+                                <h2 className="text-brutal text-xl mb-3">JEU TERMINÉ !</h2>
 
-                            {/* My final result */}
-                            <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
-                                <h3 className="text-xl font-bold text-blue-900 mb-2">Your Final Result</h3>
-                                <p className="text-2xl font-bold text-blue-600">
-                                    Rank: #{getMyRank()} | Score: {getMyScore()} points
-                                </p>
+                                {/* My final result */}
+                                <div className="bg-blue-50 border-4 border-black shadow-brutal p-3 mb-4">
+                                    <h3 className="font-bold text-blue-900 mb-1">Votre résultat</h3>
+                                    <p className="text-lg font-bold text-blue-600">
+                                        #{getMyRank()} | {getMyScore()} points
+                                    </p>
+                                </div>
                             </div>
 
-                            {/* Final leaderboard */}
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">🏆 Final Leaderboard</h3>
+                            {/* Scrollable leaderboard */}
+                            <div className="flex-1 overflow-y-auto min-h-0">
+                                <h3 className="text-brutal text-center mb-3">🏆 CLASSEMENT</h3>
                                 <div className="space-y-2">
                                     {finalLeaderboard.map((player, index) => (
-                                        <div key={index} className={`flex items-center justify-between p-4 rounded-lg ${index === 0 ? 'bg-yellow-50 border border-yellow-200' :
-                                            index === 1 ? 'bg-gray-100 border border-gray-300' :
-                                                index === 2 ? 'bg-orange-50 border border-orange-200' :
-                                                    player.nickname === nickname ? 'bg-blue-50 border border-blue-200' :
+                                        <div key={index} className={`flex items-center justify-between p-3 border-4 border-black ${index === 0 ? 'bg-yellow-100' :
+                                            index === 1 ? 'bg-gray-100' :
+                                                index === 2 ? 'bg-orange-100' :
+                                                    player.nickname === nickname ? 'bg-blue-100' :
                                                         'bg-gray-50'
                                             }`}>
                                             <div className="flex items-center">
-                                                <span className="text-xl mr-3">
+                                                <span className="text-lg mr-2">
                                                     {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
                                                 </span>
-                                                <span className="font-medium">{player.nickname}</span>
+                                                <span className="font-medium text-sm">{player.nickname}</span>
                                                 {player.nickname === nickname && (
-                                                    <span className="ml-2 text-blue-600 font-bold">(You)</span>
+                                                    <span className="ml-2 text-blue-600 font-bold text-xs">(Vous)</span>
                                                 )}
                                             </div>
-                                            <span className="text-xl font-bold text-gray-900">{player.score} pts</span>
+                                            <span className="font-bold text-gray-900">{player.score}pts</span>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="pt-6">
+                            <div className="pt-4 text-center">
                                 <Link
                                     href="/"
-                                    className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg"
+                                    className="btn-brutal-secondary py-3 px-6"
                                 >
-                                    Play Again
+                                    Rejouer 🔄
                                 </Link>
                             </div>
                         </div>
